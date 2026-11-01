@@ -1,0 +1,64 @@
+{
+  "version": "1.1.5",
+  "layout_name": "totp_transition",
+  "permissions": ["glitter-social_totp_passkey.totp_transition.manage"],
+  "extends": "_admin_base",
+  "meta": {
+    "title": "$t:glitter-social_totp_passkey.admin.transition.title",
+    "description": "$t:glitter-social_totp_passkey.admin.transition.description"
+  },
+  "initLocal": {"isSaving": false},
+  "data_sources": [{
+    "id": "socialTotpPasskeyTransitions",
+    "label_key": "$t:glitter-social_totp_passkey.admin.transition.data_source",
+    "type": "api",
+    "endpoint": "/api/plugins/glitter-social_totp_passkey/totp/transition",
+    "method": "GET",
+    "auto_fetch": true,
+    "auth_required": true,
+    "refetchOnMount": true,
+    "loading_strategy": "progressive",
+    "fallback": {"data": [], "policy": {"enabled": false, "cutoff_at": "", "start_at": "", "end_at": "", "max_attempts": 5, "emergency_stop": false}}
+  }],
+  "slots": {"content": [{
+    "id": "glitter_social_totp_passkey_transition_content",
+    "type": "basic",
+    "name": "Div",
+    "props": {"className": "admin-page-content-responsive space-y-6"},
+    "children": [
+      {"type": "composite", "name": "PageHeader", "props": {"title": "$t:glitter-social_totp_passkey.admin.transition.title", "description": "$t:glitter-social_totp_passkey.admin.transition.description", "backPath": "/admin/plugins", "backLabel": "$t:admin.plugins.back_to_list"}},
+      {"type": "basic", "name": "Div", "props": {"className": "alert-warning"}, "children": [{"type": "basic", "name": "P", "text": "$t:glitter-social_totp_passkey.admin.transition.warning"}]},
+      {"type": "basic", "name": "P", "if": "{{socialTotpPasskeyTransitions?.loading}}", "props": {"className": "text-sm text-label-subtle"}, "text": "$t:glitter-social_totp_passkey.admin.transition.loading"},
+      {"type": "basic", "name": "P", "if": "{{socialTotpPasskeyTransitions?.error}}", "props": {"className": "alert-danger"}, "text": "$t:glitter-social_totp_passkey.admin.transition.load_failed"},
+      {
+        "type": "basic", "name": "Form",
+        "props": {"className": "rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"},
+        "actions": [{"type": "submit", "handler": "sequence", "actions": [
+          {"handler": "setState", "params": {"target": "local", "isSaving": true}},
+          {"handler": "apiCall", "auth_required": true, "target": "/api/plugins/glitter-social_totp_passkey/totp/transition/policy", "params": {"method": "PUT", "body": {"enabled": "{{$event.target.enabled.checked === true}}", "cutoff_at": "{{$event.target.cutoff_at.value}}", "start_at": "{{$event.target.start_at.value}}", "end_at": "{{$event.target.end_at.value}}", "max_attempts": "{{$event.target.max_attempts.value}}", "confirm": true}}, "onSuccess": [{"handler": "setState", "params": {"target": "local", "isSaving": false, "enabled": "{{response?.data?.enabled === true}}"}}, {"handler": "toast", "params": {"type": "success", "message": "$t:glitter-social_totp_passkey.admin.transition.save_success"}}, {"handler": "refetchDataSource", "params": {"dataSourceId": "socialTotpPasskeyTransitions"}}], "onError": [{"handler": "setState", "params": {"target": "local", "isSaving": false}}, {"handler": "toast", "params": {"type": "error", "message": "$t:glitter-social_totp_passkey.admin.transition.save_failed"}}]}
+        ]}],
+        "children": [
+          {"type": "basic", "name": "H2", "props": {"className": "text-lg font-semibold mb-4"}, "text": "$t:glitter-social_totp_passkey.admin.transition.policy_title"},
+          {"type": "basic", "name": "Div", "props": {"className": "grid grid-cols-1 gap-4 md:grid-cols-2"}, "children": [
+            {"type": "basic", "name": "Div", "props": {"className": "space-y-1"}, "children": [{"type": "basic", "name": "Label", "props": {"for": "cutoff_at", "className": "form-label"}, "text": "$t:glitter-social_totp_passkey.admin.transition.cutoff_label"}, {"type": "basic", "name": "Input", "props": {"id": "cutoff_at", "name": "cutoff_at", "type": "datetime-local", "step": "1", "required": true, "className": "w-full", "value": "{{socialTotpPasskeyTransitions?.policy?.cutoff_at ? socialTotpPasskeyTransitions.policy.cutoff_at.slice(0, 19).replace(' ', 'T') : ''}}"}}, {"type": "basic", "name": "P", "props": {"className": "form-hint"}, "text": "$t:glitter-social_totp_passkey.admin.transition.datetime_hint"}]},
+            {"type": "basic", "name": "Div", "props": {"className": "space-y-1"}, "children": [{"type": "basic", "name": "Label", "props": {"for": "start_at", "className": "form-label"}, "text": "$t:glitter-social_totp_passkey.admin.transition.start_label"}, {"type": "basic", "name": "Input", "props": {"id": "start_at", "name": "start_at", "type": "datetime-local", "step": "1", "required": true, "className": "w-full", "value": "{{socialTotpPasskeyTransitions?.policy?.start_at ? socialTotpPasskeyTransitions.policy.start_at.slice(0, 19).replace(' ', 'T') : ''}}"}}, {"type": "basic", "name": "P", "props": {"className": "form-hint"}, "text": "$t:glitter-social_totp_passkey.admin.transition.datetime_hint"}]},
+            {"type": "basic", "name": "Div", "props": {"className": "space-y-1"}, "children": [{"type": "basic", "name": "Label", "props": {"for": "end_at", "className": "form-label"}, "text": "$t:glitter-social_totp_passkey.admin.transition.end_label"}, {"type": "basic", "name": "Input", "props": {"id": "end_at", "name": "end_at", "type": "datetime-local", "step": "1", "required": true, "className": "w-full", "value": "{{socialTotpPasskeyTransitions?.policy?.end_at ? socialTotpPasskeyTransitions.policy.end_at.slice(0, 19).replace(' ', 'T') : ''}}"}}, {"type": "basic", "name": "P", "props": {"className": "form-hint"}, "text": "$t:glitter-social_totp_passkey.admin.transition.end_hint"}]},
+            {"type": "basic", "name": "Div", "props": {"className": "space-y-1"}, "children": [{"type": "basic", "name": "Label", "props": {"for": "max_attempts", "className": "form-label"}, "text": "$t:glitter-social_totp_passkey.admin.transition.max_attempts_label"}, {"type": "basic", "name": "Input", "props": {"id": "max_attempts", "name": "max_attempts", "type": "number", "min": "1", "max": "20", "step": "1", "required": true, "className": "w-full", "value": "{{socialTotpPasskeyTransitions?.policy?.max_attempts ?? 5}}"}}, {"type": "basic", "name": "P", "props": {"className": "form-hint"}, "text": "$t:glitter-social_totp_passkey.admin.transition.max_attempts_hint"}]}
+          ]},
+          {"type": "basic", "name": "Label", "props": {"for": "enabled", "className": "mt-4 flex items-start gap-3 rounded-lg border border-gray-200 p-3 dark:border-gray-700"}, "children": [{"type": "basic", "name": "Input", "props": {"id": "enabled", "name": "enabled", "type": "checkbox", "checked": "{{_local.enabled !== undefined ? _local.enabled : socialTotpPasskeyTransitions?.policy?.enabled === true}}", "className": "mt-1"}, "actions": [{"type": "change", "handler": "setState", "params": {"target": "local", "enabled": "{{$event.target.checked === true}}"}}]}, {"type": "basic", "name": "Span", "text": "$t:glitter-social_totp_passkey.admin.transition.enabled_label"}]},
+          {"type": "basic", "name": "Div", "props": {"className": "mt-6 flex justify-end border-t border-gray-200 pt-4 dark:border-gray-700"}, "children": [{"type": "basic", "name": "Button", "props": {"type": "submit", "disabled": "{{_local.isSaving}}", "className": "btn btn-primary flex-center gap-2"}, "children": [{"type": "basic", "name": "Icon", "if": "{{_local.isSaving}}", "props": {"name": "spinner", "className": "spinner-sm"}}, {"type": "basic", "name": "Span", "text": "{{_local.isSaving ? '$t:glitter-social_totp_passkey.admin.transition.saving' : '$t:glitter-social_totp_passkey.admin.transition.save_policy'}}"}]}]}
+        ]
+      },
+      {"type": "basic", "name": "Div", "props": {"className": "rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/20"}, "children": [{"type": "basic", "name": "H2", "props": {"className": "text-lg font-semibold text-red-700 dark:text-red-300"}, "text": "$t:glitter-social_totp_passkey.admin.transition.emergency_title"}, {"type": "basic", "name": "P", "props": {"className": "mt-1 text-sm text-red-700 dark:text-red-300"}, "text": "$t:glitter-social_totp_passkey.admin.transition.emergency_description"}, {"type": "basic", "name": "Button", "props": {"type": "button", "className": "btn btn-danger mt-4"}, "text": "$t:glitter-social_totp_passkey.admin.transition.emergency_stop", "actions": [{"type": "click", "handler": "apiCall", "auth_required": true, "target": "/api/plugins/glitter-social_totp_passkey/totp/transition/emergency-stop", "params": {"method": "POST", "body": {"stopped": true, "confirm": true}}, "confirm": "$t:glitter-social_totp_passkey.admin.transition.emergency_confirm", "onSuccess": [{"handler": "toast", "params": {"type": "success", "message": "$t:glitter-social_totp_passkey.admin.transition.emergency_success"}}, {"handler": "refetchDataSource", "params": {"dataSourceId": "socialTotpPasskeyTransitions"}}], "onError": [{"handler": "toast", "params": {"type": "error", "message": "$t:glitter-social_totp_passkey.admin.transition.emergency_failed"}}]}]}]},
+      {"type": "basic", "name": "Div", "props": {"className": "rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"}, "children": [
+        {"type": "basic", "name": "H2", "props": {"className": "text-lg font-semibold"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_title"},
+        {"type": "basic", "name": "P", "props": {"className": "mt-1 text-sm text-label-subtle"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_description"},
+        {"type": "basic", "name": "P", "if": "{{!socialTotpPasskeyTransitions?.loading && !socialTotpPasskeyTransitions?.error && (socialTotpPasskeyTransitions?.data ?? []).length === 0}}", "props": {"className": "mt-4 rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-label-subtle dark:border-gray-600"}, "text": "$t:glitter-social_totp_passkey.admin.transition.empty"},
+        {"type": "basic", "name": "Div", "if": "{{(socialTotpPasskeyTransitions?.data ?? []).length > 0}}", "props": {"className": "mt-4 overflow-x-auto"}, "children": [{"type": "basic", "name": "Table", "props": {"className": "w-full text-sm"}, "children": [
+          {"type": "basic", "name": "Thead", "children": [{"type": "basic", "name": "Tr", "props": {"className": "border-b border-gray-200 text-left dark:border-gray-700"}, "children": [{"type": "basic", "name": "Th", "props": {"className": "px-3 py-2 font-medium"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_id"}, {"type": "basic", "name": "Th", "props": {"className": "px-3 py-2 font-medium"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_member"}, {"type": "basic", "name": "Th", "props": {"className": "px-3 py-2 font-medium"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_provider"}, {"type": "basic", "name": "Th", "props": {"className": "px-3 py-2 font-medium"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_status"}, {"type": "basic", "name": "Th", "props": {"className": "px-3 py-2 font-medium"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_attempts"}, {"type": "basic", "name": "Th", "props": {"className": "px-3 py-2 font-medium"}, "text": "$t:glitter-social_totp_passkey.admin.transition.roster_expires"}]}]},
+          {"type": "basic", "name": "Tbody", "iteration": {"source": "socialTotpPasskeyTransitions?.data ?? []", "item_var": "transition"}, "children": [{"type": "basic", "name": "Tr", "props": {"className": "border-b border-gray-100 dark:border-gray-700/60"}, "children": [{"type": "basic", "name": "Td", "props": {"className": "px-3 py-2 font-mono"}, "text": "{{transition?.id ?? '-'}}"}, {"type": "basic", "name": "Td", "props": {"className": "px-3 py-2"}, "text": "{{transition?.user_id ?? '-'}}"}, {"type": "basic", "name": "Td", "props": {"className": "px-3 py-2"}, "text": "{{transition?.provider ?? '-'}}"}, {"type": "basic", "name": "Td", "props": {"className": "px-3 py-2"}, "text": "{{transition?.status ?? '-'}}"}, {"type": "basic", "name": "Td", "props": {"className": "px-3 py-2"}, "text": "{{transition?.attempts ?? 0}}"}, {"type": "basic", "name": "Td", "props": {"className": "px-3 py-2 text-xs"}, "text": "{{transition?.expires_at ?? '-'}}"}]}]}
+        ]}]}
+      ]}
+    ]
+  }]}
+}

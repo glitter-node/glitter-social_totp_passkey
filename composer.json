@@ -1,0 +1,75 @@
+{
+    "name": "glitter/social-totp-passkey",
+    "description": "Independent social OAuth, TOTP, recovery, and WebAuthn Passkey authentication for Gnuboard7",
+    "type": "library",
+    "version": "1.1.6",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Glitter.kr"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "bacon/bacon-qr-code": "3.1.1",
+        "laravel/socialite": "^5.0",
+        "socialiteproviders/manager": "^4.0",
+        "socialiteproviders/kakao": "^4.0",
+        "web-auth/webauthn-lib": "^5.3"
+    },
+    "replace": {
+        "carbonphp/carbon-doctrine-types": "*",
+        "doctrine/inflector": "*",
+        "fruitcake/php-cors": "*",
+        "guzzlehttp/guzzle": "*",
+        "guzzlehttp/promises": "*",
+        "guzzlehttp/psr7": "*",
+        "guzzlehttp/uri-template": "*",
+        "illuminate/collections": "*",
+        "illuminate/conditionable": "*",
+        "illuminate/contracts": "*",
+        "illuminate/filesystem": "*",
+        "illuminate/http": "*",
+        "illuminate/macroable": "*",
+        "illuminate/reflection": "*",
+        "illuminate/session": "*",
+        "illuminate/support": "*",
+        "nesbot/carbon": "*",
+        "psr/clock": "*",
+        "psr/container": "*",
+        "psr/event-dispatcher": "*",
+        "psr/http-client": "*",
+        "psr/http-factory": "*",
+        "psr/http-message": "*",
+        "psr/log": "*",
+        "psr/simple-cache": "*",
+        "ralouphie/getallheaders": "*",
+        "symfony/clock": "*",
+        "symfony/deprecation-contracts": "*",
+        "symfony/error-handler": "*",
+        "symfony/event-dispatcher": "*",
+        "symfony/event-dispatcher-contracts": "*",
+        "symfony/finder": "*",
+        "symfony/http-foundation": "*",
+        "symfony/http-kernel": "*",
+        "symfony/mime": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-intl-idn": "*",
+        "symfony/polyfill-intl-normalizer": "*",
+        "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*",
+        "symfony/polyfill-php85": "*",
+        "symfony/translation": "*",
+        "symfony/translation-contracts": "^3.0",
+        "symfony/var-dumper": "*",
+        "voku/portable-ascii": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Glitter\\SocialTOTPPasskey\\": "src/Glitter/SocialTOTPPasskey/",
+            "Plugins\\Glitter\\SocialTotpPasskey\\Providers\\": "src/Providers/"
+        }
+    }
+}

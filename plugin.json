@@ -1,0 +1,31 @@
+{
+    "identifier": "glitter-social_totp_passkey",
+    "vendor": "Glitter.kr",
+    "name": {
+        "ko": "글리터 소셜 TOTP 패스키",
+        "en": "Glitter Social TOTP Passkey"
+    },
+    "version": "1.1.6",
+    "icon": "assets/icon.svg",
+    "license": "MIT",
+    "description": {
+        "ko": "소셜 OAuth·TOTP·Recovery와 WebAuthn Passkey 독립 로그인 및 대체 인증을 제공하는 보안 인증 플러그인",
+        "en": "Secure social OAuth, TOTP, recovery, and WebAuthn passkey authentication plugin."
+    },
+    "g7_version": ">=7.1.3",
+    "dependencies": {
+        "modules": {},
+        "plugins": {}
+    },
+    "assets": {
+        "js": {
+            "entry": "resources/js/GlitterSocialTOTPPasskey.js",
+            "output": "dist/js/plugin.iife.js"
+        },
+        "handlers": true
+    },
+    "loading": {
+        "strategy": "global",
+        "priority": 100
+    }
+}

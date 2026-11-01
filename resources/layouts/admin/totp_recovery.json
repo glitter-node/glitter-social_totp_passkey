@@ -1,0 +1,62 @@
+{
+  "version": "1.1.5",
+  "layout_name": "totp_recovery",
+  "permissions": ["core.users.read"],
+  "extends": "_admin_base",
+  "meta": {
+    "title": "$t:glitter-social_totp_passkey.admin.recovery.title",
+    "description": "$t:glitter-social_totp_passkey.admin.recovery.description"
+  },
+  "data_sources": [{
+    "id": "socialTotpPasskeyRecoveryRequests",
+    "label_key": "$t:glitter-social_totp_passkey.admin.recovery.data_source",
+    "type": "api",
+    "endpoint": "/api/plugins/glitter-social_totp_passkey/totp/recovery",
+    "method": "GET",
+    "auto_fetch": true,
+    "auth_required": true,
+    "refetchOnMount": true,
+    "loading_strategy": "progressive",
+    "fallback": {"data": []}
+  }],
+  "slots": {
+    "content": [{
+      "id": "glitter_social_totp_passkey_recovery_content",
+      "type": "basic",
+      "name": "Div",
+      "props": {"className": "admin-page-content-responsive space-y-6"},
+      "children": [
+        {"type": "composite", "name": "PageHeader", "props": {"title": "$t:glitter-social_totp_passkey.admin.recovery.title", "description": "$t:glitter-social_totp_passkey.admin.recovery.description", "backPath": "/admin/plugins", "backLabel": "$t:admin.plugins.back_to_list"}},
+        {"type": "basic", "name": "P", "if": "{{socialTotpPasskeyRecoveryRequests?.loading}}", "props": {"className": "text-sm text-label-subtle"}, "text": "$t:glitter-social_totp_passkey.admin.recovery.loading"},
+        {"type": "basic", "name": "P", "if": "{{socialTotpPasskeyRecoveryRequests?.error}}", "props": {"className": "alert-danger"}, "text": "$t:glitter-social_totp_passkey.admin.recovery.load_failed"},
+        {"type": "basic", "name": "P", "if": "{{!socialTotpPasskeyRecoveryRequests?.loading && !socialTotpPasskeyRecoveryRequests?.error && (socialTotpPasskeyRecoveryRequests?.data ?? []).length === 0}}", "props": {"className": "rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-label-subtle dark:border-gray-600"}, "text": "$t:glitter-social_totp_passkey.admin.recovery.empty"},
+        {
+          "type": "basic",
+          "name": "Div",
+          "if": "{{(socialTotpPasskeyRecoveryRequests?.data ?? []).length > 0}}",
+          "props": {"className": "grid grid-cols-1 gap-4 lg:grid-cols-2"},
+          "iteration": {"source": "socialTotpPasskeyRecoveryRequests?.data ?? []", "item_var": "request"},
+          "children": [{
+            "type": "basic",
+            "name": "Div",
+            "props": {"className": "rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"},
+            "children": [
+              {"type": "basic", "name": "H2", "props": {"className": "text-sm font-semibold"}, "text": "$t:glitter-social_totp_passkey.admin.recovery.request_label"},
+              {"type": "basic", "name": "P", "props": {"className": "mt-2 break-all font-mono text-xs"}, "text": "{{request?.request_id ?? '-'}}"},
+              {"type": "basic", "name": "Div", "props": {"className": "mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2"}, "children": [
+                {"type": "basic", "name": "P", "text": "$t:glitter-social_totp_passkey.admin.recovery.member|value={{request?.user_id ?? '-'}}"},
+                {"type": "basic", "name": "P", "text": "$t:glitter-social_totp_passkey.admin.recovery.provider|value={{request?.provider ?? '-'}}"},
+                {"type": "basic", "name": "P", "text": "$t:glitter-social_totp_passkey.admin.recovery.status|value={{request?.status ?? '-'}}"},
+                {"type": "basic", "name": "P", "text": "$t:glitter-social_totp_passkey.admin.recovery.evidence|value={{request?.evidence_type ?? '$t:glitter-social_totp_passkey.admin.recovery.no_evidence'}}"}
+              ]},
+              {"type": "basic", "name": "Div", "props": {"className": "mt-4 flex flex-wrap gap-2"}, "children": [
+                {"type": "basic", "name": "Button", "if": "{{request?.status === 'evidence_verified'}}", "props": {"type": "button", "className": "btn btn-primary"}, "text": "$t:glitter-social_totp_passkey.admin.recovery.approve", "actions": [{"type": "click", "handler": "apiCall", "auth_required": true, "target": "/api/plugins/glitter-social_totp_passkey/totp/recovery/{{request.request_id}}/approve", "params": {"method": "POST"}, "onSuccess": [{"handler": "toast", "params": {"type": "success", "message": "$t:glitter-social_totp_passkey.admin.recovery.approve_success"}}, {"handler": "refetchDataSource", "params": {"dataSourceId": "socialTotpPasskeyRecoveryRequests"}}], "onError": [{"handler": "toast", "params": {"type": "error", "message": "$t:glitter-social_totp_passkey.admin.recovery.action_failed"}}]}]},
+                {"type": "basic", "name": "Button", "if": "{{request?.status !== 'consumed' && request?.status !== 'rejected'}}", "props": {"type": "button", "className": "btn btn-secondary"}, "text": "$t:glitter-social_totp_passkey.admin.recovery.reject", "actions": [{"type": "click", "handler": "apiCall", "auth_required": true, "target": "/api/plugins/glitter-social_totp_passkey/totp/recovery/{{request.request_id}}/reject", "params": {"method": "POST"}, "confirm": "$t:glitter-social_totp_passkey.admin.recovery.reject_confirm", "onSuccess": [{"handler": "toast", "params": {"type": "success", "message": "$t:glitter-social_totp_passkey.admin.recovery.reject_success"}}, {"handler": "refetchDataSource", "params": {"dataSourceId": "socialTotpPasskeyRecoveryRequests"}}], "onError": [{"handler": "toast", "params": {"type": "error", "message": "$t:glitter-social_totp_passkey.admin.recovery.action_failed"}}]}]}
+              ]}
+            ]
+          }]
+        }
+      ]
+    }]
+  }
+}

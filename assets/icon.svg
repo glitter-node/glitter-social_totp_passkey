@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Glitter Social TOTP Passkey</title>
+  <desc id="desc">A white security shield with a keyhole and passkey on a violet-to-blue rounded square.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6537EA"/>
+      <stop offset="1" stop-color="#19B9E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <path d="M32 10 48 17v12c0 11-6.7 19.2-16 24-9.3-4.8-16-13-16-24V17Z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="32" cy="27" r="5" fill="#fff"/>
+  <path d="M32 32v8" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="45" cy="45" r="7" fill="#fff"/>
+  <circle cx="45" cy="45" r="2.6" fill="#3671EA"/>
+  <path d="m40 50-6 6m2-2 3 3" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,23 @@
+{
+    "version": "1.1.5",
+    "routes": [
+        {
+            "path": "*/admin/plugins/glitter-social_totp_passkey/totp-recovery",
+            "layout": "totp_recovery",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:glitter-social_totp_passkey.admin.recovery.title",
+                "permission": "core.users.read"
+            }
+        },
+        {
+            "path": "*/admin/plugins/glitter-social_totp_passkey/totp-transition",
+            "layout": "totp_transition",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:glitter-social_totp_passkey.admin.transition.title",
+                "permission": "glitter-social_totp_passkey.totp_transition.manage"
+            }
+        }
+    ]
+}

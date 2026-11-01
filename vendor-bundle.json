@@ -1,0 +1,197 @@
+{
+    "schema_version": "1.0",
+    "generated_at": "2026-11-02T04:15:06+09:00",
+    "generator": "glitter-social-totp-passkey scoped vendor build",
+    "target": "plugin:glitter-social_totp_passkey",
+    "composer_json_sha256": "912678842679b0baa62d3f7bcfdfd1174653e7d0569dbf46c6c6fbba78510f88",
+    "composer_lock_sha256": "65e4df403d0233ce4055719d20cbe88d4aabb93285f678de60fb014ee354533e",
+    "zip_sha256": "4b2bb777c0a93e8fdac0be0b7150a2785f519e9214aa05f21b593a80f4721331",
+    "zip_size": 2538162,
+    "package_count": 30,
+    "php_requirement": "^8.2",
+    "g7_version": "7.1.3",
+    "packages": [
+        {
+            "name": "bacon/bacon-qr-code",
+            "version": "v3.1.1",
+            "type": "library"
+        },
+        {
+            "name": "brick/math",
+            "version": "1.0.0",
+            "type": "library"
+        },
+        {
+            "name": "dasprid/enum",
+            "version": "1.0.7",
+            "type": "library"
+        },
+        {
+            "name": "doctrine/deprecations",
+            "version": "1.1.6",
+            "type": "library"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v7.1.1",
+            "type": "library"
+        },
+        {
+            "name": "laravel/socialite",
+            "version": "v5.31.0",
+            "type": "library"
+        },
+        {
+            "name": "league/oauth1-client",
+            "version": "v1.11.0",
+            "type": "library"
+        },
+        {
+            "name": "paragonie/constant_time_encoding",
+            "version": "v3.1.3",
+            "type": "library"
+        },
+        {
+            "name": "phpdocumentor/reflection-common",
+            "version": "2.2.1",
+            "type": "library"
+        },
+        {
+            "name": "phpdocumentor/reflection-docblock",
+            "version": "6.0.3",
+            "type": "library"
+        },
+        {
+            "name": "phpdocumentor/type-resolver",
+            "version": "2.1.0",
+            "type": "library"
+        },
+        {
+            "name": "phpseclib/phpseclib",
+            "version": "4.0.1",
+            "type": "library"
+        },
+        {
+            "name": "phpstan/phpdoc-parser",
+            "version": "2.3.6",
+            "type": "library"
+        },
+        {
+            "name": "socialiteproviders/kakao",
+            "version": "4.3.0",
+            "type": "library"
+        },
+        {
+            "name": "socialiteproviders/manager",
+            "version": "4.9.2",
+            "type": "library"
+        },
+        {
+            "name": "spomky-labs/cbor-php",
+            "version": "3.4.2",
+            "type": "library"
+        },
+        {
+            "name": "spomky-labs/pki-framework",
+            "version": "1.6.3",
+            "type": "library"
+        },
+        {
+            "name": "symfony/polyfill-intl-grapheme",
+            "version": "v1.43.0",
+            "type": "library"
+        },
+        {
+            "name": "symfony/polyfill-php81",
+            "version": "v1.38.1",
+            "type": "library"
+        },
+        {
+            "name": "symfony/polyfill-php82",
+            "version": "v1.38.1",
+            "type": "library"
+        },
+        {
+            "name": "symfony/polyfill-uuid",
+            "version": "v1.43.0",
+            "type": "library"
+        },
+        {
+            "name": "symfony/property-access",
+            "version": "v7.4.16",
+            "type": "library"
+        },
+        {
+            "name": "symfony/property-info",
+            "version": "v7.4.20",
+            "type": "library"
+        },
+        {
+            "name": "symfony/serializer",
+            "version": "v7.4.20",
+            "type": "library"
+        },
+        {
+            "name": "symfony/string",
+            "version": "v7.4.19",
+            "type": "library"
+        },
+        {
+            "name": "symfony/type-info",
+            "version": "v7.4.20",
+            "type": "library"
+        },
+        {
+            "name": "symfony/uid",
+            "version": "v7.4.20",
+            "type": "library"
+        },
+        {
+            "name": "web-auth/cose-lib",
+            "version": "4.8.2",
+            "type": "library"
+        },
+        {
+            "name": "web-auth/webauthn-lib",
+            "version": "5.3.9",
+            "type": "library"
+        },
+        {
+            "name": "webmozart/assert",
+            "version": "2.5.0",
+            "type": "library"
+        }
+    ],
+    "scoping": {
+        "prefix": "Glitter\\SocialTotpPasskey\\Vendor",
+        "tool": "humbug/php-scoper 0.18.20",
+        "config_sha256": "a839845c537d79422f82897a61ac840fca955b596f4e4f4641a3ac443f0ac898",
+        "tool_lock_sha256": "bf485f540749931389947e9e03e62a6ec656b441e106a901a689097de341fb43",
+        "private_namespaces": [
+            "BaconQrCode\\",
+            "Brick\\Math\\",
+            "CBOR\\",
+            "Cose\\",
+            "DASPRiD\\Enum\\",
+            "Doctrine\\Deprecations\\",
+            "Firebase\\JWT\\",
+            "Laravel\\Socialite\\",
+            "League\\OAuth1\\Client\\",
+            "ParagonIE\\ConstantTime\\",
+            "PHPStan\\PhpDocParser\\",
+            "SocialiteProviders\\",
+            "SpomkyLabs\\Pki\\",
+            "Symfony\\Component\\PropertyAccess\\",
+            "Symfony\\Component\\PropertyInfo\\",
+            "Symfony\\Component\\Serializer\\",
+            "Symfony\\Component\\String\\",
+            "Symfony\\Component\\TypeInfo\\",
+            "Symfony\\Component\\Uid\\",
+            "Symfony\\Polyfill\\",
+            "Webauthn\\",
+            "Webmozart\\Assert\\",
+            "phpDocumentor\\Reflection\\",
+            "phpseclib4\\"
+        ]
+    }
+}

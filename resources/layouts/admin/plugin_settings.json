@@ -1,0 +1,1002 @@
+{
+    "version": "1.1.5",
+    "layout_name": "plugin_settings",
+    "permissions": [
+        "core.plugins.update"
+    ],
+    "extends": "_admin_base",
+    "meta": {
+        "title": "$t:glitter-social_totp_passkey.settings.page_title",
+        "description": "$t:glitter-social_totp_passkey.settings.page_description"
+    },
+    "data_sources": [
+        {
+            "id": "settings",
+            "label_key": "$t:editor.data_source.settings",
+            "type": "api",
+            "endpoint": "/api/admin/plugins/{{route.identifier}}/settings",
+            "method": "GET",
+            "auto_fetch": true,
+            "auth_required": true,
+            "initLocal": "form",
+            "refetchOnMount": true
+        }
+    ],
+    "slots": {
+        "content": [
+            {
+                "id": "plugin_settings_content",
+                "type": "basic",
+                "name": "Div",
+                "dataKey": "form",
+                "trackChanges": true,
+                "props": {
+                    "className": "admin-page-content-responsive"
+                },
+                "children": [
+                    {
+                        "id": "page_header",
+                        "type": "composite",
+                        "name": "PageHeader",
+                        "props": {
+                            "title": "$t:glitter-social_totp_passkey.settings.page_title",
+                            "description": "$t:glitter-social_totp_passkey.settings.page_description",
+                            "backPath": "/admin/plugins",
+                            "backLabel": "$t:admin.plugins.back_to_list"
+                        }
+                    },
+                    {
+                        "id": "notice_banner",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": { "className": "alert-info" },
+                        "children": [
+                            {
+                                "type": "basic",
+                                "name": "Div",
+                                "props": { "className": "flex gap-3" },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Icon",
+                                        "props": { "name": "circle-info", "className": "text-xl text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" }
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "P",
+                                        "props": { "className": "text-info-soft" },
+                                        "text": "$t:glitter-social_totp_passkey.settings.notice"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "validation_error",
+                        "type": "basic",
+                        "name": "Div",
+                        "if": "{{_local.errors}}",
+                        "props": { "className": "alert-danger" },
+                        "children": [
+                            {
+                                "type": "basic",
+                                "name": "Div",
+                                "props": { "className": "flex gap-3" },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Icon",
+                                        "props": { "name": "triangle-exclamation", "className": "text-xl text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" }
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "children": [
+                                            {
+                                                "type": "basic",
+                                                "name": "H3",
+                                                "props": { "className": "text-error-strong" },
+                                                "text": "$t:admin.plugins.settings.validation_error"
+                                            },
+                                            {
+                                                "type": "basic",
+                                                "name": "Ul",
+                                                "if": "{{typeof _local.errors === 'object' && Object.keys(_local.errors).length > 0}}",
+                                                "props": { "className": "mt-2 list-disc list-inside space-y-1" },
+                                                "iteration": {
+                                                    "source": "Object.entries(_local.errors ?? {}).flatMap(([field, messages]) => Array.isArray(messages) ? messages : [messages])",
+                                                    "item_var": "message"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Li",
+                                                        "props": { "className": "grid-3col-responsive" },
+                                                        "text": "{{message}}"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "settings_form",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": { "className": "mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700" },
+                        "children": [
+                            {
+                                "id": "settings_fields",
+                                "type": "basic",
+                                "name": "Div",
+                                "props": { "className": "p-6 space-y-8" },
+                                "children": [
+                                    {
+                                        "id": "naver_section",
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "type": "basic",
+                                                "name": "H3",
+                                                "props": { "className": "section-heading" },
+                                                "text": "$t:glitter-social_totp_passkey.settings.naver_section_title"
+                                            },
+                                            {
+                                                "id": "field_naver_enabled",
+                                                "type": "basic",
+                                                "name": "Label",
+                                                "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Checkbox",
+                                                        "props": { "name": "naver_enabled" }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "text": "$t:glitter-social_totp_passkey.settings.naver_enabled.label"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_naver_client_id",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.naver_client_id.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.naver_client_id.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "text",
+                                                            "name": "naver_client_id",
+                                                            "className": "mt-1 focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_naver_client_secret",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.naver_client_secret.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.naver_client_secret.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "password",
+                                                            "name": "naver_client_secret",
+                                                            "placeholder": "••••••••••••",
+                                                            "className": "mt-1 font-mono text-sm focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "kakao_section",
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "type": "basic",
+                                                "name": "H3",
+                                                "props": { "className": "section-heading" },
+                                                "text": "$t:glitter-social_totp_passkey.settings.kakao_section_title"
+                                            },
+                                            {
+                                                "id": "field_kakao_enabled",
+                                                "type": "basic",
+                                                "name": "Label",
+                                                "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Checkbox",
+                                                        "props": { "name": "kakao_enabled" }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "text": "$t:glitter-social_totp_passkey.settings.kakao_enabled.label"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_kakao_client_id",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.kakao_client_id.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.kakao_client_id.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "text",
+                                                            "name": "kakao_client_id",
+                                                            "className": "mt-1 focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_kakao_client_secret",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.kakao_client_secret.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.kakao_client_secret.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "password",
+                                                            "name": "kakao_client_secret",
+                                                            "placeholder": "••••••••••••",
+                                                            "className": "mt-1 font-mono text-sm focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "google_section",
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4 pt-6 border-t border-gray-200 dark:border-gray-700" },
+                                        "children": [
+                                            {
+                                                "type": "basic",
+                                                "name": "H3",
+                                                "props": { "className": "section-heading" },
+                                                "text": "$t:glitter-social_totp_passkey.settings.google_section_title"
+                                            },
+                                            {
+                                                "id": "field_google_enabled",
+                                                "type": "basic",
+                                                "name": "Label",
+                                                "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Checkbox",
+                                                        "props": { "name": "google_enabled" }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "text": "$t:glitter-social_totp_passkey.settings.google_enabled.label"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_google_client_id",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.google_client_id.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.google_client_id.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "text",
+                                                            "name": "google_client_id",
+                                                            "className": "mt-1 focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_google_client_secret",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.google_client_secret.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.google_client_secret.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "password",
+                                                            "name": "google_client_secret",
+                                                            "placeholder": "••••••••••••",
+                                                            "className": "mt-1 font-mono text-sm focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                            {
+                                                "id": "facebook_section",
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4 pt-6 border-t border-gray-200 dark:border-gray-700" },
+                                        "children": [
+                                            {
+                                                "type": "basic",
+                                                "name": "H3",
+                                                "props": { "className": "section-heading" },
+                                                "text": "$t:glitter-social_totp_passkey.settings.facebook_section_title"
+                                            },
+                                            {
+                                                "id": "field_facebook_enabled",
+                                                "type": "basic",
+                                                "name": "Label",
+                                                "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Checkbox",
+                                                        "props": { "name": "facebook_enabled" }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "text": "$t:glitter-social_totp_passkey.settings.facebook_enabled.label"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_facebook_client_id",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.facebook_client_id.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.facebook_client_id.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "text",
+                                                            "name": "facebook_client_id",
+                                                            "className": "mt-1 focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_facebook_client_secret",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "form-label" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.facebook_client_secret.label"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "P",
+                                                        "props": { "className": "form-hint" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.facebook_client_secret.hint"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "password",
+                                                            "name": "facebook_client_secret",
+                                                            "placeholder": "••••••••••••",
+                                                            "className": "mt-1 font-mono text-sm focus:border-transparent"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "github_section",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-4 pt-6 border-t border-gray-200 dark:border-gray-700" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "H3",
+                                                        "props": { "className": "section-heading" },
+                                                        "text": "$t:glitter-social_totp_passkey.settings.github_section_title"
+                                                    },
+                                                    {
+                                                        "id": "field_github_enabled",
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Checkbox",
+                                                                "props": { "name": "github_enabled" }
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "text": "$t:glitter-social_totp_passkey.settings.github_enabled.label"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": "field_github_client_id",
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Label",
+                                                                "props": { "className": "form-label" },
+                                                                "text": "$t:glitter-social_totp_passkey.settings.github_client_id.label"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "P",
+                                                                "props": { "className": "form-hint" },
+                                                                "text": "$t:glitter-social_totp_passkey.settings.github_client_id.hint"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Input",
+                                                                "props": {
+                                                                    "type": "text",
+                                                                    "name": "github_client_id",
+                                                                    "className": "mt-1 focus:border-transparent"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": "field_github_client_secret",
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Label",
+                                                                "props": { "className": "form-label" },
+                                                                "text": "$t:glitter-social_totp_passkey.settings.github_client_secret.label"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "P",
+                                                                "props": { "className": "form-hint" },
+                                                                "text": "$t:glitter-social_totp_passkey.settings.github_client_secret.hint"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Input",
+                                                                "props": {
+                                                                    "type": "password",
+                                                                    "name": "github_client_secret",
+                                                                    "placeholder": "••••••••••••",
+                                                                    "className": "mt-1 font-mono text-sm focus:border-transparent"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "passkey_policy_section",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": { "className": "mt-6 space-y-4 pt-6 border-t border-gray-200 dark:border-gray-700" },
+                        "children": [
+                            { "type": "basic", "name": "H3", "props": { "className": "section-heading" }, "text": "$t:glitter-social_totp_passkey.settings.passkey_section_title" },
+                            { "type": "basic", "name": "P", "props": { "className": "form-hint" }, "text": "$t:glitter-social_totp_passkey.settings.passkey_section_hint" },
+                            { "type": "basic", "name": "Label", "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" }, "children": [
+                                { "type": "basic", "name": "Checkbox", "props": { "name": "passkey_enabled" } },
+                                { "type": "basic", "name": "Span", "text": "$t:glitter-social_totp_passkey.settings.passkey_enabled" }
+                            ] },
+                            { "type": "basic", "name": "Label", "if": "{{_local.form?.passkey_enabled}}", "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" }, "children": [
+                                { "type": "basic", "name": "Checkbox", "props": { "name": "passkey_login_enabled" } },
+                                { "type": "basic", "name": "Span", "text": "$t:glitter-social_totp_passkey.settings.passkey_login_enabled" }
+                            ] },
+                            { "type": "basic", "name": "Label", "if": "{{_local.form?.passkey_enabled}}", "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" }, "children": [
+                                { "type": "basic", "name": "Checkbox", "props": { "name": "passkey_registration_enabled" } },
+                                { "type": "basic", "name": "Span", "text": "$t:glitter-social_totp_passkey.settings.passkey_registration_enabled" }
+                            ] },
+                            { "type": "basic", "name": "Label", "if": "{{_local.form?.passkey_enabled}}", "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" }, "children": [
+                                { "type": "basic", "name": "Checkbox", "props": { "name": "passkey_totp_substitution_enabled" } },
+                                { "type": "basic", "name": "Span", "text": "$t:glitter-social_totp_passkey.settings.passkey_totp_substitution_enabled" }
+                            ] },
+                            { "type": "basic", "name": "Label", "if": "{{_local.form?.passkey_enabled && _local.form?.passkey_login_enabled}}", "props": { "className": "flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300" }, "children": [
+                                { "type": "basic", "name": "Checkbox", "props": { "name": "passkey_login_requires_totp" } },
+                                { "type": "basic", "name": "Span", "text": "$t:glitter-social_totp_passkey.settings.passkey_login_requires_totp" }
+                            ] },
+                            { "type": "basic", "name": "Div", "if": "{{_local.form?.passkey_enabled}}", "children": [
+                                { "type": "basic", "name": "Label", "props": { "className": "form-label" }, "text": "$t:glitter-social_totp_passkey.settings.passkey_user_verification" },
+                                { "type": "basic", "name": "Select", "props": { "name": "passkey_user_verification", "className": "mt-1" }, "children": [
+                                    { "type": "basic", "name": "Option", "props": { "value": "required" }, "text": "$t:glitter-social_totp_passkey.settings.passkey_uv_required" },
+                                    { "type": "basic", "name": "Option", "props": { "value": "preferred" }, "text": "$t:glitter-social_totp_passkey.settings.passkey_uv_preferred" },
+                                    { "type": "basic", "name": "Option", "props": { "value": "discouraged" }, "text": "$t:glitter-social_totp_passkey.settings.passkey_uv_discouraged" }
+                                ] }
+                            ] }
+                        ]
+                    },
+                    {
+                        "id": "provider_order_section",
+                        "type": "basic",
+                        "name": "Div",
+                        "if": "{{['naver', 'kakao', 'google', 'facebook', 'github'].filter(provider => _local.form?.[provider + '_enabled']).length >= 2}}",
+                        "props": { "className": "mt-6 space-y-4 pt-6 border-t border-gray-200 dark:border-gray-700" },
+                        "children": [
+                            {
+                                "type": "basic",
+                                "name": "H3",
+                                "props": { "className": "section-heading" },
+                                "text": "$t:glitter-social_totp_passkey.settings.provider_order_title"
+                            },
+                            {
+                                "type": "basic",
+                                "name": "P",
+                                "props": { "className": "form-hint" },
+                                "text": "$t:glitter-social_totp_passkey.settings.provider_order_hint"
+                            },
+                            {
+                                "id": "provider_order_list",
+                                "type": "basic",
+                                "name": "Div",
+                                "sortable": {
+                                    "source": "{{(Array.isArray(_local.form?.provider_order) ? _local.form.provider_order : ['naver', 'kakao', 'google', 'facebook', 'github']).filter(provider => ['naver', 'kakao', 'google', 'facebook', 'github'].includes(provider) && _local.form?.[provider + '_enabled']).map(provider => ({_id: provider, provider, label: $t('glitter-social_totp_passkey.settings.provider_name.' + provider)}))}}",
+                                    "itemKey": "_id",
+                                    "strategy": "verticalList",
+                                    "handle": "[data-drag-handle]",
+                                    "itemVar": "$providerItem",
+                                    "indexVar": "$providerIndex"
+                                },
+                                "actions": [
+                                    {
+                                        "event": "onSortEnd",
+                                        "handler": "setState",
+                                        "params": {
+                                            "target": "local",
+                                            "form": {
+                                                "provider_order": "{{(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).map(provider => ((_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).includes(provider) ? $sortedItems.map(item => item.provider)[(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).indexOf(provider)] : provider))}}"
+                                            },
+                                            "hasChanges": true
+                                        }
+                                    }
+                                ],
+                                "itemTemplate": {
+                                    "type": "basic",
+                                    "name": "Div",
+                                    "props": { "className": "glitter-social-provider-order-sortable-row flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 py-2" },
+                                    "children": [
+                                        {
+                                            "type": "basic",
+                                            "name": "Div",
+                                            "props": { "data-drag-handle": true, "className": "flex items-center justify-center w-10 h-10 shrink-0 cursor-grab text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" },
+                                            "children": [
+                                                { "type": "basic", "name": "Icon", "props": { "name": "grip-vertical", "className": "text-lg" } }
+                                            ]
+                                        },
+                                        {
+                                            "type": "basic",
+                                            "name": "Span",
+                                            "props": { "className": "w-6 text-center text-sm text-gray-500 dark:text-gray-400" },
+                                            "text": "{{$providerIndex + 1}}"
+                                        },
+                                        {
+                                            "type": "basic",
+                                            "name": "Span",
+                                            "props": { "className": "flex-1 min-w-0 font-medium text-gray-900 dark:text-gray-100" },
+                                            "text": "{{$providerItem.label}}"
+                                        },
+                                        {
+                                            "type": "basic",
+                                            "name": "Div",
+                                            "props": { "className": "flex items-center gap-1 shrink-0" },
+                                            "children": [
+                                                {
+                                                    "type": "basic",
+                                                    "name": "Button",
+                                                    "props": {
+                                                        "type": "button",
+                                                        "className": "flex items-center justify-center w-10 h-10 rounded text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed",
+                                                        "disabled": "{{$providerIndex === 0}}",
+                                                        "title": "$t:glitter-social_totp_passkey.settings.provider_order_move_up|provider={{$providerItem.label}}",
+                                                        "aria-label": "$t:glitter-social_totp_passkey.settings.provider_order_move_up|provider={{$providerItem.label}}"
+                                                    },
+                                                    "actions": [
+                                                        {
+                                                            "type": "click",
+                                                            "handler": "setState",
+                                                            "params": {
+                                                                "target": "local",
+                                                                "form": {
+                                                                    "provider_order": "{{(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).map(provider => (((_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).includes(provider)) ? (((_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).slice(0, $providerIndex - 1).concat([$providerItem.provider, (_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled'])[$providerIndex - 1]], (_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).slice($providerIndex + 1)))[(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).indexOf(provider)]) : provider))}}"
+                                                                },
+                                                                "hasChanges": true
+                                                            }
+                                                        }
+                                                    ],
+                                                    "children": [
+                                                        { "type": "basic", "name": "Icon", "props": { "name": "arrow-up" } }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "basic",
+                                                    "name": "Button",
+                                                    "props": {
+                                                        "type": "button",
+                                                        "className": "flex items-center justify-center w-10 h-10 rounded text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed",
+                                                        "disabled": "{{$providerIndex === (['naver', 'kakao', 'google', 'facebook', 'github'].filter(item => _local.form?.[item + '_enabled']).length - 1)}}",
+                                                        "title": "$t:glitter-social_totp_passkey.settings.provider_order_move_down|provider={{$providerItem.label}}",
+                                                        "aria-label": "$t:glitter-social_totp_passkey.settings.provider_order_move_down|provider={{$providerItem.label}}"
+                                                    },
+                                                    "actions": [
+                                                        {
+                                                            "type": "click",
+                                                            "handler": "setState",
+                                                            "params": {
+                                                                "target": "local",
+                                                                "form": {
+                                                                    "provider_order": "{{(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).map(provider => (((_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).includes(provider)) ? (((_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).slice(0, $providerIndex).concat([(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled'])[$providerIndex + 1], $providerItem.provider], (_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).slice($providerIndex + 2)))[(_local.form?.provider_order ?? ['naver', 'kakao', 'google', 'facebook', 'github']).filter(item => _local.form?.[item + '_enabled']).indexOf(provider)]) : provider))}}"
+                                                                },
+                                                                "hasChanges": true
+                                                            }
+                                                        }
+                                                    ],
+                                                    "children": [
+                                                        { "type": "basic", "name": "Icon", "props": { "name": "arrow-down" } }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "guide_section",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": { "className": "mt-6 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-6" },
+                        "children": [
+                            {
+                                "type": "basic",
+                                "name": "H3",
+                                "props": { "className": "section-heading mb-4" },
+                                "text": "$t:glitter-social_totp_passkey.settings.guide_title"
+                            },
+                            {
+                                "type": "basic",
+                                "name": "Ol",
+                                "props": { "className": "list-decimal list-inside space-y-3" },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Li",
+                                        "props": { "className": "text-label" },
+                                        "text": "$t:glitter-social_totp_passkey.settings.guide_item_1"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Li",
+                                        "props": { "className": "text-label" },
+                                        "text": "$t:glitter-social_totp_passkey.settings.guide_item_2"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Li",
+                                        "props": { "className": "text-label" },
+                                        "text": "$t:glitter-social_totp_passkey.settings.guide_item_3"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "footer_buttons",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": { "className": "sticky-footer-buttons" },
+                        "children": [
+                            {
+                                "id": "cancel_button",
+                                "type": "basic",
+                                "name": "Button",
+                                "props": { "className": "btn btn-secondary" },
+                                "actions": [
+                                    { "type": "click", "handler": "navigate", "params": { "path": "/admin/plugins" } }
+                                ],
+                                "children": [
+                                    { "type": "basic", "name": "Span", "text": "$t:common.cancel" }
+                                ]
+                            },
+                            {
+                                "id": "save_button",
+                                "type": "basic",
+                                "name": "Button",
+                                "props": {
+                                    "disabled": "{{!_local.hasChanges || _local.isSaving}}",
+                                    "className": "btn btn-primary flex-center gap-1.5"
+                                },
+                                "actions": [
+                                    {
+                                        "type": "click",
+                                        "handler": "sequence",
+                                        "actions": [
+                                            {
+                                                "handler": "setState",
+                                                "params": { "target": "local", "isSaving": true, "errors": null }
+                                            },
+                                            {
+                                                "handler": "apiCall",
+                                                "auth_required": true,
+                                                "target": "/api/admin/plugins/{{route.identifier}}/settings",
+                                                "params": { "method": "PUT", "body": "{{_local.form}}" },
+                                                "onSuccess": [
+                                                    {
+                                                        "handler": "setState",
+                                                        "params": { "target": "local", "isSaving": false, "hasChanges": false }
+                                                    },
+                                                    {
+                                                        "handler": "toast",
+                                                        "params": { "type": "success", "message": "$t:admin.plugins.settings.save_success" }
+                                                    },
+                                                    {
+                                                        "handler": "refetchDataSource",
+                                                        "params": { "dataSourceId": "settings" }
+                                                    }
+                                                ],
+                                                "onError": [
+                                                    {
+                                                        "handler": "setState",
+                                                        "params": { "target": "local", "isSaving": false, "errors": "{{error.errors}}" }
+                                                    },
+                                                    {
+                                                        "handler": "toast",
+                                                        "params": { "type": "error", "message": "{{error.message ?? '$t:admin.plugins.settings.save_error'}}" }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "children": [
+                                    { "type": "basic", "name": "Icon", "if": "{{_local.isSaving}}", "props": { "name": "spinner", "className": "spinner-sm" } },
+                                    { "type": "basic", "name": "Span", "if": "{{!_local.isSaving}}", "text": "$t:common.save" },
+                                    { "type": "basic", "name": "Span", "if": "{{_local.isSaving}}", "text": "$t:common.saving" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "pageConfig": {
+        "notice": "$t:glitter-social_totp_passkey.settings.notice",
+        "guide": {
+            "title": "$t:glitter-social_totp_passkey.settings.guide_title",
+            "steps": [
+                "$t:glitter-social_totp_passkey.settings.guide_item_1",
+                "$t:glitter-social_totp_passkey.settings.guide_item_2",
+                "$t:glitter-social_totp_passkey.settings.guide_item_3"
+            ]
+        }
+    },
+    "schema": {
+        "naver_enabled": {
+            "type": "boolean",
+            "default": false,
+            "label": "$t:glitter-social_totp_passkey.settings.naver_enabled.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.naver_enabled.hint"
+        },
+        "naver_client_id": {
+            "type": "string",
+            "default": "",
+            "label": "$t:glitter-social_totp_passkey.settings.naver_client_id.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.naver_client_id.hint"
+        },
+        "naver_client_secret": {
+            "type": "string",
+            "default": "",
+            "sensitive": true,
+            "label": "$t:glitter-social_totp_passkey.settings.naver_client_secret.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.naver_client_secret.hint"
+        },
+        "kakao_enabled": {
+            "type": "boolean",
+            "default": false,
+            "label": "$t:glitter-social_totp_passkey.settings.kakao_enabled.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.kakao_enabled.hint"
+        },
+        "kakao_client_id": {
+            "type": "string",
+            "default": "",
+            "label": "$t:glitter-social_totp_passkey.settings.kakao_client_id.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.kakao_client_id.hint"
+        },
+        "kakao_client_secret": {
+            "type": "string",
+            "default": "",
+            "sensitive": true,
+            "label": "$t:glitter-social_totp_passkey.settings.kakao_client_secret.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.kakao_client_secret.hint"
+        },
+        "google_enabled": {
+            "type": "boolean",
+            "default": false,
+            "label": "$t:glitter-social_totp_passkey.settings.google_enabled.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.google_enabled.hint"
+        },
+        "google_client_id": {
+            "type": "string",
+            "default": "",
+            "label": "$t:glitter-social_totp_passkey.settings.google_client_id.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.google_client_id.hint"
+        },
+        "google_client_secret": {
+            "type": "string",
+            "default": "",
+            "sensitive": true,
+            "label": "$t:glitter-social_totp_passkey.settings.google_client_secret.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.google_client_secret.hint"
+        },
+        "facebook_enabled": {
+            "type": "boolean",
+            "default": false,
+            "label": "$t:glitter-social_totp_passkey.settings.facebook_enabled.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.facebook_enabled.hint"
+        },
+        "facebook_client_id": {
+            "type": "string",
+            "default": "",
+            "label": "$t:glitter-social_totp_passkey.settings.facebook_client_id.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.facebook_client_id.hint"
+        },
+        "facebook_client_secret": {
+            "type": "string",
+            "default": "",
+            "sensitive": true,
+            "label": "$t:glitter-social_totp_passkey.settings.facebook_client_secret.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.facebook_client_secret.hint"
+        },
+        "github_enabled": {
+            "type": "boolean",
+            "default": false,
+            "label": "$t:glitter-social_totp_passkey.settings.github_enabled.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.github_enabled.hint"
+        },
+        "github_client_id": {
+            "type": "string",
+            "default": "",
+            "label": "$t:glitter-social_totp_passkey.settings.github_client_id.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.github_client_id.hint"
+        },
+        "github_client_secret": {
+            "type": "string",
+            "default": "",
+            "sensitive": true,
+            "label": "$t:glitter-social_totp_passkey.settings.github_client_secret.label",
+            "hint": "$t:glitter-social_totp_passkey.settings.github_client_secret.hint"
+        },
+        "provider_order": {
+            "type": "array",
+            "default": ["naver", "kakao", "google", "facebook", "github"],
+            "label": "$t:glitter-social_totp_passkey.settings.provider_order_title",
+            "hint": "$t:glitter-social_totp_passkey.settings.provider_order_hint"
+        },
+        "passkey_enabled": { "type": "boolean", "default": false },
+        "passkey_login_enabled": { "type": "boolean", "default": true },
+        "passkey_registration_enabled": { "type": "boolean", "default": true },
+        "passkey_totp_substitution_enabled": { "type": "boolean", "default": false },
+        "passkey_login_requires_totp": { "type": "boolean", "default": false },
+        "passkey_user_verification": {
+            "type": "enum",
+            "options": ["required", "preferred", "discouraged"],
+            "default": "required"
+        }
+    }
+}

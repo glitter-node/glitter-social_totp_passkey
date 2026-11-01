@@ -1,0 +1,11 @@
+# Security model
+
+OAuth remains the first authentication factor for social login. New registrations cannot create a member until TOTP enrollment and confirmation complete. Existing provider identities cannot create a login session until the configured TOTP challenge completes, except when the administrator explicitly enables Passkey substitution. A substituting Passkey is restricted to the same pending OAuth user and requires WebAuthn user verification.
+
+TOTP secrets are encrypted at rest. Validity windows, replay counters, attempt limits, lock state, recovery evidence, re-registration, transition records, and transaction boundaries remain enforced by the dedicated services and tables. Email equality does not link accounts, and a provider identity already owned by another member is rejected.
+
+Passkey support is disabled by default. Challenges are random, expire after five minutes, are consumed once under a cache lock, and are bound to their ceremony purpose, session, browser, user when known, and OAuth context when applicable. RP ID and the only allowed Origin come from an HTTPS `app.url`; request Host headers cannot select either value. `web-auth/webauthn-lib` validates client-data type, challenge, Origin, RP ID hash, authenticator data, signature, user presence, the requested user-verification policy, and signature counter. Credential IDs are globally unique by SHA-256 digest, and the updated library record and counter are persisted in the same database transaction.
+
+Discoverable-credential login creates short-lived, single-use evidence for Gnuboard7's external-authentication contract. The core issues a session only after consuming that evidence atomically. If `passkey_login_requires_totp` is enabled, the evidence remains pending until existing TOTP verification succeeds; a user without enrolled TOTP receives a fail-closed enrollment-required response. Passkey registration and deletion require an existing reauthentication token. Passkey-based reauthentication itself always requests user verification, independently of the less strict policy an administrator may choose for ordinary Passkey login.
+
+The plugin does not read Gnuboard7 `security.two_factor_auth`. Its social additional-authentication policy is unchanged by that core setting. Diagnostic fields are limited to provider, action, stage, reason, and exception class.
